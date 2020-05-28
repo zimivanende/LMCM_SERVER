@@ -1,0 +1,150 @@
+syntax = "proto3";
+
+message VideoItem {
+  int32 repo_id = 1;
+  string title = 2;
+  string poster_url = 3;
+  string description = 4;
+  int32 director = 5;
+  int32 runtime = 6;
+  string genre = 7;
+  int32 release_year = 8;
+  float avg_rating = 9;
+}
+
+message AlbumItem {
+  int32 repo_id = 1;
+  string title = 2;
+  string poster_url = 3;
+  int32 artist = 4;
+  string genre = 5;
+  int32 release_year = 6;
+  float avg_rating = 7;
+}
+
+message Contributor {
+  int32 id = 1;
+  string name = 2;
+}
+
+message Episode {
+  int32 repo_id = 1;
+  int32 episode = 2;
+  int32 season = 3;
+}
+
+message Track {
+  int32 repo_id = 1;
+  string title = 2;
+}
+
+message ItemRequest {
+  string title = 1;
+  int32 duration = 2;
+  string client_id = 3;
+}
+
+message SimilarRequest {
+  int32 repo_id = 1;
+  string client_id =2;
+}
+
+message MovieResponse {
+  VideoItem item = 1;
+  repeated Contributor contributor = 2;
+}
+
+service MovieData {
+  rpc GetMovieData (ItemRequest) returns (MovieResponse) {}
+}
+
+message MoviesResponse {
+  repeated MovieResponse movie = 1;
+}
+
+service FixMovieData {
+  rpc GetMoviesData (ItemRequest) returns (MoviesResponse) {}
+}
+
+service SimilarMovieData {
+  rpc GetSimilarMovieData (SimilarRequest) returns (MoviesResponse) {}
+}
+
+message TvShowResponse {
+  VideoItem item = 1;
+  repeated Contributor contributor = 2;
+  repeated Episode episode = 3;
+}
+
+service TvShowData {
+  rpc GetTvShowData (ItemRequest) returns (TvShowResponse) {}
+}
+
+message TvShowsResponse {
+  repeated TvShowResponse tvshow = 1;
+}
+
+service FixTvShowData {
+  rpc GetTvShowsData (ItemRequest) returns (TvShowsResponse) {}
+}
+
+service SimilarTvShowData {
+  rpc GetSimilarTvShowData (SimilarRequest) returns (TvShowsResponse) {}
+}
+
+message AlbumResponse {
+  AlbumItem item = 1;
+  Contributor artist = 2;
+  repeated Track track = 3;
+}
+
+service AlbumData {
+  rpc GetAlbumData (ItemRequest) returns (AlbumResponse) {}
+}
+
+message AlbumsResponse {
+  repeated AlbumResponse album = 1;
+}
+
+service FixAlbumData {
+  rpc GetAlbumsData (ItemRequest) returns (AlbumsResponse) {}
+}
+
+service SimilarAlbumData {
+  rpc GetSimilarAlbumData (SimilarRequest) returns (AlbumsResponse) {}
+}
+
+message RecommendationsRequest {
+  string client_id = 1;
+  int32 user_id = 2;
+  repeated int32 favorite_ids = 3;
+  repeated int32 bookmarked_ids = 4;
+  repeated int32 watched_ids = 5;
+}
+
+message RecommendationsResponse {
+  repeated MovieResponse movie = 1;
+  repeated TvShowResponse tvshow = 2;
+  repeated AlbumResponse album = 3;
+}
+
+service RecommendationsData {
+  rpc GetRecommendationsData (RecommendationsRequest) returns (RecommendationsResponse) {}
+}
+
+message IdRequest {
+  string data = 1;
+}
+
+message IdResponse {
+  string client_id = 1;
+  string message = 2;
+}
+
+service LinkClient {
+  rpc AddClient (IdRequest) returns (IdResponse) {}
+}
+
+service UnlinkClient {
+  rpc RemoveClient (IdRequest) returns (IdResponse) {}
+}
