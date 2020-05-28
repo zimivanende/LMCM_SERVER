@@ -1,4 +1,6 @@
-import urllib.request
+"""
+Classes used for converting data retreived from API calls into database compatible classes
+"""
 
 from tmdbv3api import Movie
 from tmdbv3api import TMDb
@@ -7,10 +9,13 @@ from tmdbv3api import TV
 import database as database
 
 
-API_KEY = "bc449fa32c4ebeda2a186af9137b58ec"
-CAST_AMOUNT = 3
+# TODO: API key weg bij indienen
+API_KEY = "bc449fa32c4ebeda2a186af9137b58ec"  # Request a new one here: https://www.themoviedb.org/settings/api
+CAST_AMOUNT = 3  # The amount of cast members you want to retrieve from the API
+SIMILAR_AMOUNT = 8  # The amount of similar items that will be retrieved
 
 
+# Data class for movie search results
 class MovieSearchResult:
     def __init__(self):
         self.movie: database.Movie = None
@@ -18,6 +23,7 @@ class MovieSearchResult:
         self.cast: [database.Contributor] = []
 
 
+# Data class for the show search results
 class TvShowSearchResult:
     def __init__(self):
         self.tvshow: database.TvShow = None
@@ -26,6 +32,8 @@ class TvShowSearchResult:
         self.cast: [database.Contributor] = []
 
 
+# Class to do all API request to
+# Some kind of personal API wrapper of the tmdbv3 API wrapper
 class Tmdbapi:
     tmdb = TMDb()
     tmdb.api_key = API_KEY
@@ -44,6 +52,7 @@ class Tmdbapi:
     #           the movie's director property will be None, the director's id will be None, the cast's id's will be None
     # Their names need to be checked in the database first to make sure not to add them twice
 
+    # Convert tmdbv3 API data into our own MovieSearchResult
     def tmdb_to_movie(self, moviedata) -> MovieSearchResult:
         movie = database.Movie()
         movie.tmdbId = moviedata.id
@@ -106,6 +115,7 @@ class Tmdbapi:
 
         return output
 
+    # Search for a movie by title and duration
     def search_movie(self, query: str, duration: int) -> MovieSearchResult:
         search = self.movie.search(query)
 
@@ -121,6 +131,7 @@ class Tmdbapi:
 
         return output
 
+    # Search multiple movies by title
     def search_movies(self, query: str, max_movies: int) -> [MovieSearchResult]:
         search = self.movie.search(query)
 
@@ -136,8 +147,8 @@ class Tmdbapi:
         return output
 
     # "Download" a movie thumbnail
-    def get_poster_movie(self, tmdbid: int) -> str:
-        movie_result = self.movie.details(tmdbid)
+    def get_poster_movie(self, tmdb_id: int) -> str:
+        movie_result = self.movie.details(tmdb_id)
         poster_path = movie_result.poster_path
 
         if poster_path is None:
@@ -145,16 +156,18 @@ class Tmdbapi:
 
         return "https://image.tmdb.org/t/p/w500" + poster_path
 
-    def get_similar_tmdb_movies(self, tmdbid: int) -> [MovieSearchResult]:
+    # Get similar tmdb movies
+    def get_similar_tmdb_movies(self, tmdb_id: int) -> [MovieSearchResult]:
         output = []
-        for moviedata in self.movie.similar(tmdbid):
+        for moviedata in self.movie.similar(tmdb_id):
             output.append(self.tmdb_to_movie(moviedata))
-            if len(output) == 8:
+            if len(output) == SIMILAR_AMOUNT:
                 break
         return output
 
     # TV shows
 
+    # Convert tmdbv3 API data into our own TvShowSearchResult
     def tmdb_to_tvshow(self, tvshowdata) -> TvShowSearchResult:
         tvshow = database.TvShow()
         tvshow.title = tvshowdata.name
@@ -263,8 +276,8 @@ class Tmdbapi:
         return output
 
     # "Download" a tv show thumbnail
-    def get_poster_tv(self, tmdbid: int) -> str:
-        tv_result = self.tv.details(tmdbid)
+    def get_poster_tv(self, tmdb_id: int) -> str:
+        tv_result = self.tv.details(tmdb_id)
         poster_path = tv_result.poster_path
 
         if poster_path is None:
@@ -272,10 +285,11 @@ class Tmdbapi:
 
         return "https://image.tmdb.org/t/p/w500" + poster_path
 
-    def get_similar_tmdb_tvshows(self, tmdbid: int) -> [TvShowSearchResult]:
+    # Get the similar items of a tv show
+    def get_similar_tmdb_tvshows(self, tmdb_id: int) -> [TvShowSearchResult]:
         output = []
-        for tvshowdata in self.tv.similar(tmdbid):
+        for tvshowdata in self.tv.similar(tmdb_id):
             output.append(self.tmdb_to_tvshow(tvshowdata))
-            if len(output) == 8:
+            if len(output) == SIMILAR_AMOUNT:
                 break
         return output

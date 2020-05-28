@@ -4,6 +4,8 @@ import request_handler_pb2 as rh
 import request_handler_pb2_grpc as rh_grpc
 from recommendations import RecommendationGenerator, Rating, RecommendationSyncer
 
+
+# Parse a video item into a grpc response
 def parse_videoitem(response, item):
     # Parse itemdata into response
     response.item.repo_id = int(item.itemId or 0)
@@ -16,6 +18,8 @@ def parse_videoitem(response, item):
     response.item.release_year = int(item.releaseYear or 0)
     response.item.avg_rating = float(item.avgRating or 0.0)
 
+
+# Parse an album item into a grpc response
 def parse_albumitem(response, item):
     # Parse itemdata into response
     response.item.repo_id = int(item.itemId or 0)
@@ -26,6 +30,8 @@ def parse_albumitem(response, item):
     response.item.release_year = int(item.releaseYear or 0)
     response.item.avg_rating = float(item.avgRating or 0.0)
 
+
+# Parse a contributor into a grpc response
 def parse_contributor(response, item):
     # Parse contributors into response (find director using director id from item)
     contributors = MetaFinder().get_all_contributors(item.itemId, item.director)
@@ -35,6 +41,13 @@ def parse_contributor(response, item):
         contributor.name = str(c.name or "")
         response.contributor.append(contributor)
 
+
+"""
+gRPC request handlers
+"""
+
+
+# Handler for movie requests
 class MovieRequestHandler(rh_grpc.MovieDataServicer):
     def GetMovieData(self, request, context):
         response = rh.MovieResponse()
@@ -52,6 +65,8 @@ class MovieRequestHandler(rh_grpc.MovieDataServicer):
         # Return response
         return response
 
+
+# Handler for tv show requests
 class TvShowRequestHandler(rh_grpc.TvShowDataServicer):
     def GetTvShowData(self, request, context):
         response = rh.TvShowResponse()
@@ -79,6 +94,8 @@ class TvShowRequestHandler(rh_grpc.TvShowDataServicer):
         # Return response
         return response
 
+
+# Handler for album requests
 class AlbumRequestHandler(rh_grpc.AlbumDataServicer):
     def GetAlbumData(self, request, context):
         response = rh.AlbumResponse()
@@ -108,6 +125,8 @@ class AlbumRequestHandler(rh_grpc.AlbumDataServicer):
         # Return response
         return response
 
+
+# Handler for the movie fix request
 class FixMoviesRequestHandler(rh_grpc.FixMovieDataServicer):
     def GetMoviesData(self, request, context):
         response = rh.MoviesResponse()
@@ -133,6 +152,8 @@ class FixMoviesRequestHandler(rh_grpc.FixMovieDataServicer):
         # Return response
         return response
 
+
+# Handler for the tv show fix request
 class FixTvShowsRequestHandler(rh_grpc.FixTvShowDataServicer):
     def GetTvShowsData(self, request, context):
         response = rh.TvShowsResponse()
@@ -167,6 +188,8 @@ class FixTvShowsRequestHandler(rh_grpc.FixTvShowDataServicer):
         # Return response
         return response
 
+
+# Handler for the album fix request
 class FixAlbumsRequestHandler(rh_grpc.FixAlbumDataServicer):
     def GetAlbumsData(self, request, context):
         response = rh.AlbumsResponse()
@@ -203,6 +226,8 @@ class FixAlbumsRequestHandler(rh_grpc.FixAlbumDataServicer):
         # Return response
         return response
 
+
+# Handler for the similar movies request
 class SimilarMoviesRequestHandler(rh_grpc.SimilarMovieDataServicer):
     def GetSimilarMovieData(self, request, context):
         response = rh.MoviesResponse()
@@ -228,6 +253,8 @@ class SimilarMoviesRequestHandler(rh_grpc.SimilarMovieDataServicer):
         # Return response
         return response
 
+
+# Handler for the similar tv shows request
 class SimilarTvShowsRequestHandler(rh_grpc.SimilarTvShowDataServicer):
     def GetSimilarTvShowData(self, request, context):
         response = rh.TvShowsResponse()
@@ -262,6 +289,8 @@ class SimilarTvShowsRequestHandler(rh_grpc.SimilarTvShowDataServicer):
         # Return response
         return response
 
+
+# Handler for the similar albums request
 class SimilarAlbumsRequestHandler(rh_grpc.SimilarAlbumDataServicer):
     def GetSimilarAlbumData(self, request, context):
         response = rh.AlbumsResponse()
@@ -298,6 +327,8 @@ class SimilarAlbumsRequestHandler(rh_grpc.SimilarAlbumDataServicer):
         # Return response
         return response
 
+
+# Handler for the recommendation request
 class RecommendationsRequestHandler(rh_grpc.RecommendationsDataServicer):
     def GetRecommendationsData(self, request, context):
         response = rh.RecommendationsResponse()
@@ -364,6 +395,8 @@ class RecommendationsRequestHandler(rh_grpc.RecommendationsDataServicer):
         # Return response
         return response
 
+
+# Handler for the client linking request
 class LinkClientHandler(rh_grpc.LinkClientServicer):
     def AddClient(self, request, context):
         response = rh.IdResponse()
@@ -381,6 +414,8 @@ class LinkClientHandler(rh_grpc.LinkClientServicer):
         # Return response
         return response
 
+
+# Handler for the client unlinking request
 class UnlinkClientHandler(rh_grpc.UnlinkClientServicer):
     def RemoveClient(self, request, context):
         response = rh.IdResponse()

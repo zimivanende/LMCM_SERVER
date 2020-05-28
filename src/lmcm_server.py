@@ -40,17 +40,17 @@ rh_grpc.add_LinkClientServicer_to_server(
 rh_grpc.add_UnlinkClientServicer_to_server(
         UnlinkClientHandler(), server)
 
-#Developper license key
+# Developer license key
 dev_key = Database().get_licensekey_data_by_id(1)
 
-if dev_key == None:
-    print("Developper key (available clients = 1000): " + Database().add_new_license_key(1000))
+if dev_key is None:
+    print("Developer key (available clients = 1000): " + Database().add_new_license_key(1000))
 elif dev_key["usedClients"] == dev_key["maxClients"]:
     Database().update_max_clients_licensekey_by_id(1, dev_key["maxClients"] + 1000)
     dev_key = Database().get_licensekey_data_by_id(1)
-    print("Developper key (available clients = " + str(dev_key["maxClients"] - dev_key["usedClients"]) +"): " + dev_key["licenseKey"])
+    print("Developer key (available clients = " + str(dev_key["maxClients"] - dev_key["usedClients"]) + "): " + dev_key["licenseKey"])
 else:
-    print("Developper key (available clients = " + str(dev_key["maxClients"] - dev_key["usedClients"]) +"): " + dev_key["licenseKey"])
+    print("Developer key (available clients = " + str(dev_key["maxClients"] - dev_key["usedClients"]) + "): " + dev_key["licenseKey"])
 
 # listen on port 50051
 print('Starting server. Listening on port 50051.')
@@ -61,7 +61,6 @@ server.start()
 # a sleep-loop is added to keep alive
 try:
     while True:
-        #TODO: Is this long enough????
         time.sleep(86400)
 except KeyboardInterrupt:
     server.stop(0)

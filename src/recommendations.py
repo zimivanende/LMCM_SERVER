@@ -2,6 +2,8 @@
 Recommendation generator class
 Supply with a bunch of Rating objects depicting what score users gave to items
 And generate recommendations for those items
+
+Also used to keep the database's recommendations up to date
 """
 
 import pandas as pd
@@ -15,6 +17,7 @@ from singleton import Singleton
 RECOMMENDATION_AMOUNT = 20
 
 
+# Class to store data needed by the recommendation algorithm
 class Rating:
     def __init__(self, user_id: int, item_id: int, rating: float):
         self.user_id = user_id
@@ -26,6 +29,7 @@ class Rating:
                                                                                  self.rating)
 
 
+# Class to store data outputted by the recommendation algorithm
 class Recommendation:
     def __init__(self):
         self.item_id = None
@@ -37,6 +41,7 @@ class Recommendation:
                                                           int(self.distance * 100))
 
 
+# Class to keep the database recommendations up to date
 class RecommendationSyncer:
     def __init__(self):
         pass
@@ -71,6 +76,7 @@ class RecommendationSyncer:
             Database().add_rating(db_rating)
 
 
+# Class to generate new recommendations based on data received by the database
 class RecommendationGenerator(metaclass=Singleton):
     def __init__(self):
         self.model_knn = None

@@ -6,9 +6,10 @@ import mysql.connector as mariadb
 
 DB_USER = "root"
 DB_PASS = "password"
-DB_NAME= "lmcm"
+DB_NAME = "lmcm"
 
 
+# Set up the tables of the database if they do not exist yet
 def setup_database():
     conn = None
 

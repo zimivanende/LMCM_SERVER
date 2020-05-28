@@ -1,3 +1,9 @@
+"""
+Class meant to find the data with the API class and store it in the database where and when necessary
+
+Concrete: the point of this class is to fill the database
+"""
+
 from tmdbv import Tmdbapi
 from database import Database, Movie, TvShow, Episode, Album, Track, StarsIn, Similar, Contributor, Rating
 
@@ -6,6 +12,7 @@ class MetaFinder:
     def __init__(self):
         pass
 
+    # Search a movie based on its title and duration
     def search_movie(self, title: str, duration: int) -> Movie:
         # Search in database
         movie = Database().search_movie(title)
@@ -36,6 +43,7 @@ class MetaFinder:
         else:
             return None
 
+    # Search for multiple movies that have relevant titles
     def search_movies(self, title: str, max_movies: int) -> [Movie]:
         # Search in database
         movies = Database().search_movies(title)
@@ -70,12 +78,14 @@ class MetaFinder:
 
         return movies
 
+    # Get all the contributors of an item with a certain contributor id
     def get_all_contributors(self, item_id: int, director_id: int) -> [Contributor]:
         contributors = Database().get_contributors_of_item_id(item_id)
         if director_id is not None:
             contributors.append(Database().get_contributor_by_id(director_id))
         return contributors
 
+    # Search for a contributor by id
     def get_director_or_artist(self, contributor_id: int) -> Contributor:
         return Database().get_contributor_by_id(contributor_id)
 
@@ -119,6 +129,7 @@ class MetaFinder:
 
         return movie
 
+    # Get the similar movies of an item we already have
     def get_similar_movies(self, item_id: int) -> [Movie]:
         requested_movie = Database().get_movie_by_item_id(item_id)
         similar_movies = Database().get_similar_of_item_id(item_id)
@@ -161,6 +172,7 @@ class MetaFinder:
 
     # TV Shows
 
+    # Search tv shows based on their title and episode duration
     def search_tvshow(self, title: str, duration: int) -> TvShow:
         tvshow = Database().search_tvshow(title)
 
@@ -190,6 +202,7 @@ class MetaFinder:
         else:
             return None
 
+    # Search for multiple tv shows that have relevant titles
     def search_tvshows(self, title: str, max_tvshows: int) -> [TvShow]:
         tvshows = Database().search_tvshows(title)
 
@@ -223,9 +236,11 @@ class MetaFinder:
 
         return tvshows
 
+    # Get all the episodes of an item
     def get_all_episodes(self, item_id: int) -> [Episode]:
         return Database().get_episodes_of_item_id(item_id)
 
+    # Add a new tv show to the database
     def add_new_tvshow_to_database(self, tvshow, episodes, director, cast, poster_url) -> TvShow:
         tvshow.itemId = Database().get_new_item_id()
         tvshow.posterURL = poster_url
@@ -270,6 +285,7 @@ class MetaFinder:
 
         return tvshow
 
+    # Get similar tv shows of a tv show
     def get_similar_tvshows(self, item_id: int) -> [TvShow]:
         requested_tvshow = Database().get_tvshow_by_item_id(item_id)
         similar_tvshows = Database().get_similar_of_item_id(item_id)
@@ -312,9 +328,9 @@ class MetaFinder:
 
         return similar_tvshows
 
+    # Albums
 
-    # album
-
+    # Search for an album based on its title
     def search_album(self, title: str, duration: int) -> Album:
         track = Database().search_track(title)
 
@@ -341,6 +357,7 @@ class MetaFinder:
         else:
             return None
 
+    # Search for multiple albums that have relevant titles
     def search_albums(self, title: str, max_albums: int) -> Album:
         albums = Database().search_albums(title)
 
@@ -367,6 +384,7 @@ class MetaFinder:
 
         return albums
 
+    # Add a new album to the database
     def add_new_album_to_database(self, album, artist, tracks, poster_url) -> Album :
         album.itemId = Database().get_new_item_id()
         album.posterURL = poster_url
@@ -399,7 +417,8 @@ class MetaFinder:
 
         return album
 
-    #Expects parent album to exist
+    # Add a new track to the database
+    # Expects parent album to exist
     def add_new_track_to_database(self, track) -> Track:
         if Database().get_album_by_item_id(track.parentId) is not None:
             track.itemId = Database().get_new_item_id()
@@ -408,9 +427,11 @@ class MetaFinder:
         else:
             return None
 
+    # Get all tracks of an item
     def get_all_tracks(self, item_id: int) -> [Track]:
         return Database().get_tracks_of_item_id(item_id)
 
+    # Get the similar albums of an album
     def get_similar_albums(self, item_id: int) -> [Album]:
         requested_album = Database().get_album_by_item_id(item_id)
         similar_albums = Database().get_similar_of_item_id(item_id)
