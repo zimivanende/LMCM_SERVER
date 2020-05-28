@@ -9,7 +9,6 @@ from tmdbv3api import TV
 import database as database
 
 
-# TODO: API key weg bij indienen
 API_KEY = "bc449fa32c4ebeda2a186af9137b58ec"  # Request a new one here: https://www.themoviedb.org/settings/api
 CAST_AMOUNT = 3  # The amount of cast members you want to retrieve from the API
 SIMILAR_AMOUNT = 8  # The amount of similar items that will be retrieved
@@ -125,9 +124,9 @@ class Tmdbapi:
             movie = self.tmdb_to_movie(movie_data)
             if output is None:
                 output = movie
-            #TODO: Turn off for demo as demo files are dummy files
-            elif abs(movie.movie.runtime - duration) < abs(output.movie.runtime - duration):
-                output = movie
+            #Turned off for demo as demo files are short dummy files
+            #elif abs(movie.movie.runtime - duration) < abs(output.movie.runtime - duration):
+                #output = movie
 
         return output
 
@@ -254,9 +253,9 @@ class Tmdbapi:
             tvshow = self.tmdb_to_tvshow(tvshow_data)
             if output is None:
                 output = tvshow
-            #TODO: Turn off for demo as demo files are dummy files
-            elif abs(tvshow.tvshow.runtime - duration) < abs(output.tvshow.runtime - duration):
-                output = tvshow
+            #Turned off for demo as demo files are short dummy files
+            #elif abs(tvshow.tvshow.runtime - duration) < abs(output.tvshow.runtime - duration):
+                #output = tvshow
 
         return output
 

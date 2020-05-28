@@ -197,7 +197,6 @@ class Database(metaclass=Singleton):
         self.conn.close()
 
     # Generate a new unique id for a generic item
-    # TODO: make truly unique by storing a local variable
     def get_new_item_id(self) -> int:
         # create new cursor
         cursor = self.conn.cursor(dictionary=True, buffered=True)
