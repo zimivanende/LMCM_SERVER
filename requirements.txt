@@ -1,0 +1,15 @@
+#### Database ####
+pymysql
+mysql-connector
+
+#### GRPC ####
+grpcio
+grpcio-tools
+
+#### API ####
+tmdbv3api
+
+#### Recommendations ####
+pandas
+scipy
+scikit-learn
