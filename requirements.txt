@@ -7,7 +7,7 @@ grpcio
 grpcio-tools
 
 #### API ####
-tmdbv3api
+tmdbv3api==1.5.1
 
 #### Recommendations ####
 pandas
