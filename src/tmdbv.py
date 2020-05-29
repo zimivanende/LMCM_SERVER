@@ -124,7 +124,6 @@ class Tmdbapi:
             movie = self.tmdb_to_movie(movie_data)
             if output is None:
                 output = movie
-            #Turned off for demo as demo files are short dummy files
             #elif abs(movie.movie.runtime - duration) < abs(output.movie.runtime - duration):
                 #output = movie
 
@@ -253,7 +252,6 @@ class Tmdbapi:
             tvshow = self.tmdb_to_tvshow(tvshow_data)
             if output is None:
                 output = tvshow
-            #Turned off for demo as demo files are short dummy files
             #elif abs(tvshow.tvshow.runtime - duration) < abs(output.tvshow.runtime - duration):
                 #output = tvshow
 
