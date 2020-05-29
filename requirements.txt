@@ -2,8 +2,8 @@
 mysql-connector-python==8.0.19
 
 #### GRPC ####
-grpcio==1.29.0
-grpcio-tools==1.29.0
+grpcio
+grpcio-tools
 
 #### API ####
 tmdbv3api==1.5.1
