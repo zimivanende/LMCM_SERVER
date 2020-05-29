@@ -1,5 +1,5 @@
 #### Database ####
-mysql-connector-python==8.0.19
+mysql-connector-python==8.0.20
 
 #### GRPC ####
 protobuf==3.11.3
