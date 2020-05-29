@@ -1,15 +1,14 @@
 #### Database ####
-pymysql
-mysql-connector
+mysql-connector==8.0.19
 
 #### GRPC ####
-grpcio
-grpcio-tools
+grpcio==1.28.1
+grpcio-tools==1.28.1
 
 #### API ####
 tmdbv3api==1.5.1
 
 #### Recommendations ####
-pandas
-scipy
-scikit-learn
+pandas==1.0.3
+scipy==1.4.1
+scikit-learn==0.23.1
