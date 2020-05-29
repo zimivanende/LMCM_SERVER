@@ -67,9 +67,16 @@ class Tmdbapi:
         genre = None
 
         if movie_details is not None:
-            runtime = movie_details["runtime"]
-            genres = movie_details["genres"]
-
+            if hasattr(movie_details, 'runtime'):
+                runtime = movie_details["runtime"]
+            else:
+                runtime = 0
+                
+            if hasattr(movie_details, 'genres'):
+                genres = movie_details["genres"]
+            else:
+                genres = None
+                
             if genres is not None and len(genres) > 0:
                 genre = genres[0]["name"]
 
@@ -86,8 +93,11 @@ class Tmdbapi:
 
         director = None
         director_name = None
+        crew = []
 
-        crew = movie_credits["crew"]
+        if hasattr(movie_credits, 'crew'):
+            crew = movie_credits["crew"]
+            
         for person in crew:
             if person["job"] == "Director":
                 director_name = person["name"]
@@ -100,7 +110,9 @@ class Tmdbapi:
         # Cast
 
         cast = []
-        actors = movie_credits["cast"]
+        actors = []
+        if hasattr(movie_credits, 'cast'):
+            actors = movie_credits["cast"]
 
         for actor in actors[0:CAST_AMOUNT]:
             cast_member = database.Contributor()
@@ -179,12 +191,18 @@ class Tmdbapi:
         genre = None
 
         if tvshow_details is not None:
-            runtimes = tvshow_details["episode_run_time"]
+            if hasattr(tvshow_details, 'episode_run_time'):
+                runtimes = tvshow_details["episode_run_time"]
+            else:
+                runtimes = None
 
             if runtimes is not None and len(runtimes) != 0:
                 runtime = runtimes[0]
 
-            genres = tvshow_details["genres"]
+            if hasattr(tvshow_details, 'genres'):
+                genres = tvshow_details["genres"]
+            else:
+                genres = None
 
             if genres is not None and len(genres) > 0:
                 genre = genres[0]["name"]
@@ -202,8 +220,11 @@ class Tmdbapi:
         # Director
 
         director = None
-
-        created_by = tvshow_details["created_by"]
+        
+        if hasattr(tvshow_details, 'created_by'):
+            created_by = tvshow_details["created_by"]
+        else:
+            created_by = None
 
         if created_by is not None and len(created_by) != 0:
             director = database.Contributor()
@@ -212,8 +233,11 @@ class Tmdbapi:
         # Cast
 
         cast = []
-        actors = tvshow_details["credits"]["cast"]
-        print(actors)
+        if hasattr(tvshow_details, 'credits'):
+            if hasattr(vshow_details["credits"], 'cast'):
+                actors = tvshow_details["credits"]["cast"]
+        else:
+            actors = []
 
         for actor in actors[0:CAST_AMOUNT]:
             cast_member = database.Contributor()
@@ -224,15 +248,16 @@ class Tmdbapi:
 
         episodes = []
 
-        seasons_data = tvshow_details["seasons"]
-        for season_data in seasons_data:
-            season_nr = season_data["season_number"]
-            for episode_nr in range(1, season_data["episode_count"] + 1):
-                episode = database.Episode()
-                episode.tmdbId = None
-                episode.season = season_nr
-                episode.episode = episode_nr
-                episodes.append(episode)
+        if hasattr(tvshow_details, 'seasons'):
+            seasons_data = tvshow_details["seasons"]
+            for season_data in seasons_data:
+                season_nr = season_data["season_number"]
+                for episode_nr in range(1, season_data["episode_count"] + 1):
+                    episode = database.Episode()
+                    episode.tmdbId = None
+                    episode.season = season_nr
+                    episode.episode = episode_nr
+                    episodes.append(episode)
 
         output = TvShowSearchResult()
         output.tvshow = tvshow
