@@ -1,5 +1,5 @@
 #### Database ####
-mysql-connector==8.0.19
+mysql-connector-python==8.0.19
 
 #### GRPC ####
 grpcio==1.28.1
