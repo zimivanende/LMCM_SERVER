@@ -79,8 +79,8 @@ class Tmdbapi:
                 
             if genres is not None and len(genres) > 0:
                 genre = genres[0]["name"]
-			else:
-				genre = "Unknown"
+            else:
+                genre = "Unknown"
 
         movie.runtime = runtime
         movie.genre = genre
@@ -208,7 +208,7 @@ class Tmdbapi:
 
             if genres is not None and len(genres) > 0:
                 genre = genres[0]["name"]
-			else:
+            else:
 				genre = "Unknown"
 
         tvshow.runtime = runtime
