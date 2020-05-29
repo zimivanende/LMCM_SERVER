@@ -67,18 +67,20 @@ class Tmdbapi:
         genre = None
 
         if movie_details is not None:
-            if hasattr(movie_details, 'runtime'):
+            if "runtime" in movie_details.keys():
                 runtime = movie_details["runtime"]
             else:
                 runtime = 0
                 
-            if hasattr(movie_details, 'genres'):
+            if "genres" in movie_details.keys():
                 genres = movie_details["genres"]
             else:
                 genres = None
                 
             if genres is not None and len(genres) > 0:
                 genre = genres[0]["name"]
+			else:
+				genre = "Unknown"
 
         movie.runtime = runtime
         movie.genre = genre
@@ -95,7 +97,7 @@ class Tmdbapi:
         director_name = None
         crew = []
 
-        if hasattr(movie_credits, 'crew'):
+        if "crew" in movie_credits.keys():
             crew = movie_credits["crew"]
             
         for person in crew:
@@ -111,7 +113,7 @@ class Tmdbapi:
 
         cast = []
         actors = []
-        if hasattr(movie_credits, 'cast'):
+        if "cast" in movie_credits.keys():
             actors = movie_credits["cast"]
 
         for actor in actors[0:CAST_AMOUNT]:
@@ -191,7 +193,7 @@ class Tmdbapi:
         genre = None
 
         if tvshow_details is not None:
-            if hasattr(tvshow_details, 'episode_run_time'):
+            if "episode_run_time" in tvshow_details.keys():
                 runtimes = tvshow_details["episode_run_time"]
             else:
                 runtimes = None
@@ -199,13 +201,15 @@ class Tmdbapi:
             if runtimes is not None and len(runtimes) != 0:
                 runtime = runtimes[0]
 
-            if hasattr(tvshow_details, 'genres'):
+            if "genres" in tvshow_details.keys():
                 genres = tvshow_details["genres"]
             else:
                 genres = None
 
             if genres is not None and len(genres) > 0:
                 genre = genres[0]["name"]
+			else:
+				genre = "Unknown"
 
         tvshow.runtime = runtime
         tvshow.genre = genre
@@ -221,7 +225,7 @@ class Tmdbapi:
 
         director = None
         
-        if hasattr(tvshow_details, 'created_by'):
+        if "created_by" in tvshow_details.keys():
             created_by = tvshow_details["created_by"]
         else:
             created_by = None
@@ -233,8 +237,8 @@ class Tmdbapi:
         # Cast
 
         cast = []
-        if hasattr(tvshow_details, 'credits'):
-            if hasattr(vshow_details["credits"], 'cast'):
+        if "credits" in tvshow_details.keys():
+            if "cast" in tvshow_details["credits"].keys():
                 actors = tvshow_details["credits"]["cast"]
         else:
             actors = []
@@ -248,7 +252,7 @@ class Tmdbapi:
 
         episodes = []
 
-        if hasattr(tvshow_details, 'seasons'):
+        if "seasons" in tvshow_details.keys():
             seasons_data = tvshow_details["seasons"]
             for season_data in seasons_data:
                 season_nr = season_data["season_number"]
