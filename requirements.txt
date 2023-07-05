@@ -3,7 +3,7 @@ mysql-connector-python==8.0.20
 
 #### GRPC ####
 protobuf==3.11.3
-grpcio==1.28.1
+grpcio==1.53.0
 grpcio-tools==1.28.1
 
 #### API ####
